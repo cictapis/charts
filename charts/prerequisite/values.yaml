@@ -1,4 +1,4 @@
-# Default values for cict-datacore.
+# Default values for prerequisite.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -80,3 +80,9 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+## Istio prerequisite chart configuration
+##
+istio:
+  ## @param istio.name Define istio-system namespace name
+  name: istio-system
