@@ -1,0 +1,32 @@
+apiVersion: v1
+entries:
+  cict-auth:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-03-17T22:22:58.789804201+07:00"
+    dependencies:
+    - name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 7.0.9
+    - name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 7.0.9
+    description: A Helm chart for Kubernetes
+    digest: fcbaffe8f3b4b00a503cea252942c25cd7ffa41a89c35e9c7e96f73b694bbe63
+    name: cict-auth
+    type: application
+    urls:
+    - packaged-charts/cict-auth-0.1.0.tgz
+    version: 0.1.0
+  prerequisite:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-03-17T22:22:58.790598452+07:00"
+    description: A Helm chart for Kubernetes
+    digest: fdd1f11ef2523073ef6099325ab9686afef8c01bbb10e37a64667c0c6f2cacbc
+    name: prerequisite
+    type: application
+    urls:
+    - packaged-charts/prerequisite-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-03-17T22:22:58.768329812+07:00"
