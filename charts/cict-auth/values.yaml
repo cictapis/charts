@@ -1,0 +1,149 @@
+# Default values for cict-auth.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+## Mysql chart configuration
+## https://github.com/bitnami/charts/blob/main/bitnami/mysql/values.yaml
+##
+mysql:
+  ## @param mysql.enabled Deploy a Mysql server to satisfy the applications database requirements
+  ##
+  enabled: true
+  ## @param mysql.arichitecture Mysql architecture. Allowed values: `standalone` or `replication`
+  ##
+  architecture: standalone
+  ## override the fullname
+  ##
+  fullnameOverride: mysql
+  ## Mysql Authentication parameters
+  ##
+  auth:
+    rootPassword: password
+    database: cict_academic
+    username: cict_academic_user
+    password: password
+
+## External database
+## All of these values are only used if `mysq.enabled=false`
+externalDatabase:
+  ## @param externalDatabase.host External Database server host
+  ##
+  host: localhost
+  ## @param externalDatabase.port External Database server port
+  ##
+  port: 3306
+  ## @param externalDatabase.user External Database username
+  ##
+  user: cict_academic_user
+  ## @param externalDatabase.password External Database password
+  ##
+  password: ""
+  ## @param externalDatabase.database External Database database name
+  database: cict_academic
+
+## Redis chart configuration
+## https://github.com/bitnami/charts/blob/main/bitnami/redis/values.yaml
+##
+redis:
+  ## @param redis.enalbed Deploy a Redis server to satisfy the applications redis requirements
+  ##
+  enabled: true
+  ## @param redis.architecture Redis architecture. `standalone` or `replication`
+  ##
+  architecture: standalone
+
+  ## @param redis.fullnameOverride overriding the name of service deploying in kubernetes
+  ##
+  fullnameOverride: redis
+
+  ## The replica of redis  configuration
+  ##
+  replica:
+    ## @param redis.replica.replicaCount number of replicas to deploy
+    replicaCount: 3
+
+externalCache:
+  ## @param externalCache.host External cache server host
+  host: localhost
+
+  ## @param external cache.port External port server port
+  port: 6379
