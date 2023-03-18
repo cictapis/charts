@@ -1,0 +1,92 @@
+repositories:
+  - name: istio
+    url: https://istio-release.storage.googleapis.com/charts
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+  - name: kiali
+    url: https://kiali.org/helm-charts
+  - name: prometheus
+    url: https://prometheus-community.github.io/helm-charts
+
+releases:
+  - chart: istio/gateway
+    name: ingress-gateway
+    namespace: istio-system
+    version: 1.17.1
+    installed: true
+
+  - chart: kiali/kiali-server
+    name: kiali
+    namespace: istio-system
+    version: 1.65.0
+    installed: true
+    values:
+    - auth:
+        strategy: anonymous
+      deployment:
+        image_version: v1.65
+        pod_labels:
+          sidecar.istio.io/inject: "false"
+        accessible_namespace:
+        - '**'
+        ingress_enabled: false
+        hpa:
+          api_version: autoscaling/v2beta2
+      login_token:
+        signing_key: CHANGEME00000000
+
+  - chart: prometheus/prometheus
+    name: prometheus
+    namespace: istio-system
+    version: 19.7.2
+    installed: true
+    values:
+    - alertmanager:
+        enabled: false
+      prometheus-pushgateway:
+        enabled: false
+      prometheus-metrics:
+        enabled: false
+      prometheus-node-exporter:
+        enabled: false
+      server:
+        podLabels:
+          sidecar.istio.io/inject: "false"
+        persistentVolume:
+          enabled: false
+        service:
+          servicePort: 9090
+        readinessProbeInitialDelay: 0
+        global:
+          scrape_interval: 15s
+        
+        fullnameOverride: prometheus
+
+        image:
+          repository: prom/prometheus
+
+  - chart: bitnami/mysql
+    name: mysql
+    namespace: cict
+    version: 9.6.0
+    installed: false
+    values:
+    - architecture: standalone
+      auth:
+        rootPassword: password
+        createDatabase: true
+        database: cict_auth
+        username: cict_user
+        password: password
+
+  - chart: bitnami/redis
+    name: redis
+    namespace: cict
+    version: 17.8.5
+    installed: false
+    values:
+    - architecture: standalone
+      auth:
+        password: password
+      replica:
+        replicaCount: 1

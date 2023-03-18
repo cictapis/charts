@@ -85,4 +85,4 @@ affinity: {}
 ##
 istio:
   ## @param istio.name Define istio-system namespace name
-  name: istio-system
+  istioSystemNamespace: istio-system

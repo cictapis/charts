@@ -1,0 +1,23 @@
+repositories:
+  - name: istio
+    url: https://istio-release.storage.googleapis.com/charts
+
+releases:
+  - chart: ../../charts/prerequisite
+    name: prerequisite
+    wait: true
+    installed: true
+
+  - chart: istio/base
+    name: base
+    namespace: istio-system
+    version: 1.17.1
+    wait: true
+    installed: true
+
+  - chart: istio/istiod
+    name: istiod
+    namespace: istio-system
+    version: 1.17.1
+    wait: true
+    installed: true
